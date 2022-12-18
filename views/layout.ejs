@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <title>ToDo管理アプリ</title>
+</head>
+<body>
+  <%- include('./partials/top.ejs') %>
+  <div class="flashes">
+    <% if (flashMessages) { %>
+      <% if (flashMessages.success) { %>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          <%= flashMessages.success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } else if (flashMessages.error) { %>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <%= flashMessages.error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+  <div class="container">
+    <%- body %>
+  </div>
+  <script src="/js/bootstrap.bundle.js"></script>
+</body>
+</html>

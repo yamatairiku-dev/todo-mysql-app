@@ -1,0 +1,137 @@
+<div class="text-center">
+  <h2>ToDo一覧</h2>
+</div>
+
+<nav aria-label="Search results pages">
+<ul class="pagination justify-content-center">
+  <% if (pagenation.pagePre) { %>
+    <li class="page-item"><a class="page-link" href="?page=<%= pagenation.pagePre %>&completed=<%= completedQuery %>&order_by=<%= orderQuery %>">Previous</a></li>
+  <% } %>
+  <% pagenation.pageNumArr.forEach(pageNum => { %>
+    <% const activeClass = pageNum === pagenation.currentPage ? 'active' : '' %>
+    <li class="page-item <%= activeClass %>"><a class="page-link" href="?page=<%= pageNum %>&completed=<%= completedQuery %>&order_by=<%= orderQuery %>"><%= pageNum %></a></li>
+  <% }) %>
+  <% if (pagenation.pageNext) { %>
+    <li class="page-item"><a class="page-link" href="?page=<%= pagenation.pageNext %>&completed=<%= completedQuery %>&order_by=<%= orderQuery %>">Next</a></li>
+  <% } %>
+</ul>
+</nav>
+
+<div>
+  <div class="float-start">
+    <select class="form-select" aria-label="sortOrder" id="sortOrder">
+      <option value="<%= sortOrderList[0] %>" <%= sortOrderSelected[0] %>><%= sortOrderListName[0] %></option>
+      <option value="<%= sortOrderList[1] %>" <%= sortOrderSelected[1] %>><%= sortOrderListName[1] %></option>
+      <option value="<%= sortOrderList[2] %>" <%= sortOrderSelected[2] %>><%= sortOrderListName[2] %></option>
+      <option value="<%= sortOrderList[3] %>" <%= sortOrderSelected[3] %>><%= sortOrderListName[3] %></option>
+      <option value="<%= sortOrderList[4] %>" <%= sortOrderSelected[4] %>><%= sortOrderListName[4] %></option>
+    </select>
+  </div>
+  <div class="form-check float-end">
+    <input class="form-check-input" type="radio" name="completedCondition" id="allList" value="<%= completedConditionList[0] %>" <%= completedConditionChecked[0] %>>
+    <label class="form-check-label" for="allList">
+      全て
+    </label>
+  </div>
+  <div class="form-check float-end">
+    <input class="form-check-input" type="radio" name="completedCondition" id="completedList" value="<%= completedConditionList[1] %>" <%= completedConditionChecked[1] %>>
+    <label class="form-check-label" for="completedList">
+      完了
+    </label>
+  </div>
+  <div class="form-check float-end">
+    <input class="form-check-input" type="radio" name="completedCondition" id="uncompletedList" value="<%= completedConditionList[2] %>" <%= completedConditionChecked[2] %>>
+    <label class="form-check-label" for="uncompletedList">
+      未完了
+    </label>
+  </div>
+
+</div>
+
+
+<table class="table table-hover" id="todos-table">
+<thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Title</th>
+    <th scope="col">Category</th>
+    <th scope="col">Deadline</th>
+    <th scope="col">Completed</th>
+    <th scope="col">Updated</th>
+    <th scope="col">全<%= itemNum %>件</th>
+  </tr>
+</thead>
+<tbody>
+  <% todos.forEach(todo => { %>
+    <% const completedParams = todo.completed ? ['完了', 'DELETE', '完了取消'] : ['未完了', 'PUT', '完了'] %>
+    <tr>
+      <th> <%= todos.indexOf(todo) + 1 + (pagenation.currentPage - 1) * itemPerPage  %> </th>
+      <td> <%= todo.title %> </td>
+      <td> <%= todo.category %> </td>
+      <td> <%= todo.deadline %> </td>
+      <td> <%= completedParams[0] %> </td>
+      <td> <%= todo.updatedAt.toString().slice(0,-17) %> </td>
+      <td> 
+        <button class="btn btn-outline-primary btn-sm" onclick="location.href='/todos/<%= todo.id %>/completed?_method=<%= completedParams[1] %>'"><%= completedParams[2] %></button> 
+        <button class="btn btn-outline-danger btn-sm" onclick="location.href='/todos/<%= todo.id %>?_method=DELETE'">削除</button> 
+      </td>
+    </tr>
+  <% }) %>
+</tbody>
+</table>
+
+<script>
+  let selectInput = document.getElementById('sortOrder')
+  selectInput.addEventListener('change', function () {
+    let queryStr = location.search
+    queryStr = queryStr.substring(1)
+    if (queryStr === '') {
+      queryStr = this.value
+    } else {
+      const queryArr = queryStr.split('&')
+      let i = -1
+      queryArr.forEach(function (element, index) {
+        if (element.search('order_by') > -1) {
+          i = index
+        }
+      })
+      if (i >- 1) {
+        queryArr[i] = this.value
+        queryStr = queryArr.join('&')
+      } else {
+        queryStr = queryArr.join('&') + '&' + this.value
+      }
+    }
+    targetUrl = location.pathname + '?' + queryStr
+    location.href = targetUrl
+  })
+
+  let radioInput = document.getElementsByName('completedCondition')
+  for (let i = 0; i < radioInput.length; i++) {
+    radioInput[i].addEventListener('change', function () {
+      if (this.checked) {
+        let queryStr = location.search
+        queryStr = queryStr.substring(1)
+        if (queryStr === '') {
+          queryStr = this.value
+        } else {
+          const queryArr = queryStr.split('&')
+          let i = -1
+          queryArr.forEach(function (element, index) {
+            if (element.search('completed') > -1) {
+              i = index
+            }
+          })
+          if (i >- 1) {
+            queryArr[i] = this.value
+            queryStr = queryArr.join('&')
+          } else {
+            queryStr = queryArr.join('&') + '&' + this.value
+          }
+        }
+        targetUrl = location.pathname + '?' + queryStr
+        location.href = targetUrl
+      }
+    })
+  }
+</script>
