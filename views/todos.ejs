@@ -45,9 +45,7 @@
       未完了
     </label>
   </div>
-
 </div>
-
 
 <table class="table table-hover" id="todos-table">
 <thead>
@@ -83,25 +81,8 @@
 <script>
   let selectInput = document.getElementById('sortOrder')
   selectInput.addEventListener('change', function () {
-    let queryStr = location.search
-    queryStr = queryStr.substring(1)
-    if (queryStr === '') {
-      queryStr = this.value
-    } else {
-      const queryArr = queryStr.split('&')
-      let i = -1
-      queryArr.forEach(function (element, index) {
-        if (element.search('order_by') > -1) {
-          i = index
-        }
-      })
-      if (i >- 1) {
-        queryArr[i] = this.value
-        queryStr = queryArr.join('&')
-      } else {
-        queryStr = queryArr.join('&') + '&' + this.value
-      }
-    }
+    let queryStr = location.search.substring(1)
+    queryStr = rebuildQueryString(queryStr, 'order_by', this.value)
     targetUrl = location.pathname + '?' + queryStr
     location.href = targetUrl
   })
@@ -110,28 +91,45 @@
   for (let i = 0; i < radioInput.length; i++) {
     radioInput[i].addEventListener('change', function () {
       if (this.checked) {
-        let queryStr = location.search
-        queryStr = queryStr.substring(1)
-        if (queryStr === '') {
-          queryStr = this.value
-        } else {
-          const queryArr = queryStr.split('&')
-          let i = -1
-          queryArr.forEach(function (element, index) {
-            if (element.search('completed') > -1) {
-              i = index
-            }
-          })
-          if (i >- 1) {
-            queryArr[i] = this.value
-            queryStr = queryArr.join('&')
-          } else {
-            queryStr = queryArr.join('&') + '&' + this.value
-          }
-        }
+        let queryStr = location.search.substring(1)
+        queryStr = rebuildQueryString(queryStr, 'completed', this.value)
         targetUrl = location.pathname + '?' + queryStr
         location.href = targetUrl
       }
     })
+  }
+
+  function rebuildQueryString (queryStr, targetQueryParam, selectedQueryParam) {
+    if (queryStr === '') {
+      queryStr = selectedQueryParam
+    } else {
+      const queryArr = queryStr.split('&')
+      // クエリパラメータ page を探して見つかれば削除（条件変更時は1ページ目を表示させるため）
+      let i = -1
+      queryArr.forEach(function (element, index) {
+        if (element.search('page') > -1) {
+          i = index
+        }
+      })
+      if (i >- 1) {
+        queryArr.splice(i,1)
+      }
+
+      // targetQueryParam を探して見つかれば selectedQueryParam で置き換え。見つからなければ selectedQueryParam を付加
+      // i を再利用するため初期化
+      i = -1
+      queryArr.forEach(function (element, index) {
+        if (element.search(targetQueryParam) > -1) {
+          i = index
+        }
+      })
+      if (i >- 1) {
+        queryArr[i] = selectedQueryParam
+        queryStr = queryArr.join('&')
+      } else {
+        queryStr = queryArr.join('&') + '&' + selectedQueryParam
+      }
+    }
+    return queryStr
   }
 </script>
