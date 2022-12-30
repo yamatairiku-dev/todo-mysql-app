@@ -55,7 +55,6 @@ module.exports = (sequelize) => {
         ],
         where: whereClause,
         order: orderClause,
-        // order: [['updatedAt', 'ASC']],
         limit: ITEM_PER_PAGE,
         offset: ITEM_PER_PAGE * (page - 1)
       })
@@ -64,6 +63,7 @@ module.exports = (sequelize) => {
       todos.rows.forEach(element => {
         const todo = element.dataValues
         todo.category = todo.Category.dataValues.name
+        todo.deadline = formatDate(todo.deadline)
         delete todo.Category
         todoList.push(todo)
       })
@@ -111,7 +111,7 @@ module.exports = (sequelize) => {
     },
     deadline: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.DATE
     },
     categoryId: {
       allowNull: false,
@@ -127,4 +127,16 @@ module.exports = (sequelize) => {
     freezeTableName: true
   })
   return Todo
+}
+
+// Dateフォーマット
+function formatDate (date) {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  let monthStr = '0' + month
+  monthStr = monthStr.slice(-2)
+  const day = date.getDate()
+  let dayStr = '0' + day
+  dayStr = dayStr.slice(-2)
+  return `${year}/${monthStr}/${dayStr}`
 }
