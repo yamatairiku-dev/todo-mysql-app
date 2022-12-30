@@ -171,6 +171,30 @@ app.delete('/todos/:id', (req, res, next) => {
   }, next)
 })
 
+// ToDoの新規登録
+app.get('/todos/new', (req, res, next) => {
+  models.Category.getCategoryList().then(categoryList => {
+    res.render('new', {
+      categoryList
+    })
+  }, next)
+})
+app.post('/todos/create', (req, res, next) => {
+  const title = req.body.title
+  const categoryId = req.body.category
+  const deadline = req.body.deadline
+  if (typeof title !== 'string' || !title) {
+    // titleがリクエストに含まれない場合はステータスコード400(Bad Request)
+    const err = new Error('title is required')
+    err.statusCode = 400
+    return next(err)
+  }
+  models.Todo.addTodo(title, categoryId, deadline).then((id) => {
+    req.flash('success', `ToDo登録成功! ID: ${id}`)
+    res.redirect('/todos')
+  }, next)
+})
+
 // Home
 app.get('/', (req, res) => res.render('index'))
 
@@ -180,4 +204,4 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({ error: err.message })
 })
 
-app.listen(port, () => console.log(`Todo App listening on port ${port}!`))
+app.listen(port, () => console.log(`Todo MySql App listening on port ${port}!`))

@@ -14,12 +14,11 @@ module.exports = (sequelize) => {
     }
 
     // Todoの登録
-    static async addTodo (title, deadline, categoryId) {
-      // userIdを新規登録
+    static async addTodo (title, categoryId, deadline) {
       const todo = await this.create({
         title,
-        deadline,
-        categoryId
+        categoryId,
+        deadline
       })
       return todo.dataValues.id
     }
