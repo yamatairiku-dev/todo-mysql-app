@@ -120,7 +120,7 @@ module.exports = {
       next()
     }, next)
   },
-  deleteTodo: (req, res, next) => {
+  delete: (req, res, next) => {
     const id = req.params.id
     const refererUrl = req.headers.referer
     models.Todo.delTodo(id).then(id => {
@@ -132,20 +132,53 @@ module.exports = {
       next()
     }, next)
   },
-  newTodo: (req, res, next) => {
+  // 将来的にはカテゴリーコントローラのメソッドで代替
+  getCategoryList: (req, res, next) => {
     models.Category.getCategoryList().then(categoryList => {
-      res.render('todo/new', {
-        categoryList
-      })
+      res.locals.categoryList = categoryList
+      next()
     }, next)
   },
-  createTodo: (req, res, next) => {
+  newView: (req, res) => {
+    res.render('todo/new')
+  },
+  create: (req, res, next) => {
     const title = req.body.title
     const categoryId = req.body.category
     const deadline = req.body.deadline
     models.Todo.addTodo(title, categoryId, deadline).then((id) => {
       req.flash('success', `ToDo登録成功! ID: ${id}`)
-      res.locals.redirect = '/todos'
+      res.locals.redirect = '/todos?completed=&order_by=updated_desc'
+      next()
+    }, next)
+  },
+  edit: (req, res, next) => {
+    const id = req.params.id
+    models.Todo.getTodo(id).then(todo => {
+      res.locals.todo = todo
+      next()
+    }, next)
+  },
+  editView: (req, res) => {
+    res.render('todo/edit')
+  },
+  update: (req, res, next) => {
+    const id = req.params.id
+    const refererUrl = req.headers.referer
+    const update = {
+      title: req.body.title,
+      categoryId: req.body.category,
+      deadline: req.body.deadline
+    }
+    models.Todo.modTodo(id, update).then((id) => {
+      // 成否を判定
+      if (!id) {
+        req.flash('error', '更新失敗！')
+        res.locals.redirect = refererUrl
+      } else {
+        req.flash('success', '更新成功！')
+        res.locals.redirect = '/todos?completed=&order_by=updated_desc'
+      }
       next()
     }, next)
   },

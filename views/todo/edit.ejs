@@ -1,0 +1,33 @@
+<div>
+  <div class="text-center">
+      <h2>ToDoの更新</h2>
+  </div>
+  <form action="/todos/<%= todo.id %>?_method=PUT" method="POST">
+    <div class="mb-3">
+      <label for="titleInput" class="form-label">タイトル <span class="text-muted">（入力必須）</span></label>
+      <input value="<%= todo.title %>" type="text" name="title" class="form-control" id="titleInput" placeholder="タイトル" required autofocus>
+    </div>
+    <div class="mb-3">
+      <label for="categorySelect" class="form-label">カテゴリー<span class="text-muted">（入力必須）</span></label>
+      <select class="form-select" name="category" id="categorySelect" required>
+        <option></option>
+        <% let selected %>
+        <% for (let i = 0; i < categoryList.length; i++) { %>
+          <% selected = categoryList[i].name === todo.category ? 'selected' : '' %>
+          <option <%= selected %> value="<%= categoryList[i].id %>"><%= categoryList[i].name %></option>
+        <% } %>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="deadlineInput" class="form-label">期限<span class="text-muted">（入力必須）</span></label>
+      <input value="<%= todo.deadline %>" type="date" name="deadline" class="form-control" id="deadlineInput" required>
+    </div>
+    <div class="mb-3">
+      <label for="completedSelect" class="form-label">状態</label>
+      <% const completed = todo.completed ? '完了' : '未完了' %>
+      <input value="<%= completed %>" name="deadline" class="form-control" id="completedSelect" required disabled>
+    </div>
+    <hr class="mb-4">
+    <button class="btn btn-warning btn-lg btn-block" type="submit">Todo更新</button>
+  </form>
+</div>
