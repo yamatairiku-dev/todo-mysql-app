@@ -68,7 +68,7 @@
       <td> <%= todo.category %> </td>
       <td> <%= todo.deadline %> </td>
       <td> <%= completedParams[0] %> </td>
-      <td> <%= todo.updatedAt.toString().slice(0, -17) %> </td>
+      <td> <%= todo.updatedAt %> </td>
       <td> 
         <button class="btn btn-outline-primary btn-sm" onclick="location.href='/todos/<%= todo.id %>/completed?_method=<%= completedParams[1] %>'"><%= completedParams[2] %></button> 
         <button class="btn btn-outline-danger btn-sm" onclick="location.href='/todos/<%= todo.id %>?_method=DELETE'">削除</button> 

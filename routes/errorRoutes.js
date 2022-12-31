@@ -3,7 +3,7 @@
 const router = require('express').Router()
 const errorController = require('../controllers/errorController')
 
-router.use(errorController.pageNotFoundError)
-router.use(errorController.internalServerError)
+router.get('/error', errorController.clientError, errorController.errorView)
+router.use(errorController.pageNotFoundError, errorController.errorView)
 
 module.exports = router

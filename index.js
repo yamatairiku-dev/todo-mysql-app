@@ -48,5 +48,15 @@ app.use((req, res, next) => {
 
 app.use('/', router)
 
+// エラーハンドリング
+app.use((error, req, res, next) => {
+  console.error(error)
+  const errCode = 500
+  const errMsg = '何らかのエラーが発生!'
+  const errDescription = `${error.stack}`
+  const reqUrl = req.url
+  res.render('error/error', { errCode, errMsg, errDescription, reqUrl })
+})
+
 // アプリケーションのリスナー設定
 app.listen(port, () => console.log(`Todo MySql App listening on port ${port}!`))

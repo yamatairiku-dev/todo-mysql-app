@@ -3,17 +3,32 @@
 const { StatusCodes } = require('http-status-codes')
 
 module.exports = {
-  // 404でレスポンス
-  pageNotFoundError: (req, res) => {
-    const errorCode = StatusCodes.NOT_FOUND
-    res.status(errorCode)
-    res.render('error', { title: 'Not Found!', url: req.url })
+  // 400番台のエラーレスポンス(404以外)
+  clientError: (req, res, next) => {
+    res.locals.errCode = res.locals.errCode || StatusCodes.BAD_REQUEST
+    res.locals.errMsg = res.locals.errMsg || 'たぶんリクエストが悪い'
+    res.locals.errDescription = res.locals.errDescription || ''
+    res.locals.reqUrl = res.locals.reqUrl || ''
+    next()
   },
-  // 全てのエラーをキャッチ
-  internalServerError: (error, req, res, next) => {
-    const errorCode = StatusCodes.INTERNAL_SERVER_ERROR
-    console.log(`ERROR occured: ${error.stack}`)
-    res.status(errorCode)
-    res.send(`${errorCode} | Sorry, our aplication is taking a nap!`)
+
+  // 経路が見つからなければ404でレスポンス
+  pageNotFoundError: (req, res, next) => {
+    res.locals.errCode = StatusCodes.NOT_FOUND
+    res.locals.errMsg = 'ページが見つかりません!'
+    res.locals.errDescription = ''
+    res.locals.reqUrl = req.url
+    next()
+  },
+  errorView: (req, res, next) => {
+    res.render('error/error')
   }
+
+  // 全てのエラーをキャッチ
+  // internalServerError: (error, req, res, next) => {
+  //   const errorCode = StatusCodes.INTERNAL_SERVER_ERROR
+  //   console.log(`ERROR occured: ${error.stack}`)
+  //   res.status(errorCode)
+  //   res.send(`${errorCode} | Sorry, our aplication is taking a nap!`)
+  // }
 }

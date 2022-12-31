@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
 
     // Todoの取得
     static async getTodo (id) {
-      const todo = await this.findByPk(id, {
+      const todoData = await this.findByPk(id, {
         include: 'Category',
         attributes: [
           'id',
@@ -37,7 +37,11 @@ module.exports = (sequelize) => {
           'updatedAt'
         ]
       })
-      return todo.dataValues
+      const todo = todoData.dataValues
+      todo.category = todo.Category.dataValues.name
+      todo.deadline = formatDate(todo.deadline)
+      delete todo.Category
+      return todo
     }
 
     // Todo一覧の取得
@@ -64,6 +68,7 @@ module.exports = (sequelize) => {
         const todo = element.dataValues
         todo.category = todo.Category.dataValues.name
         todo.deadline = formatDate(todo.deadline)
+        todo.updatedAt = formatDate(todo.updatedAt) + ' ' + formatHourMin(todo.updatedAt)
         delete todo.Category
         todoList.push(todo)
       })
@@ -138,5 +143,15 @@ function formatDate (date) {
   const day = date.getDate()
   let dayStr = '0' + day
   dayStr = dayStr.slice(-2)
-  return `${year}/${monthStr}/${dayStr}`
+  return `${year}-${monthStr}-${dayStr}`
+}
+// 時分フォーマット
+function formatHourMin (date) {
+  const hour = date.getHours()
+  let hourStr = '0' + hour
+  hourStr = hourStr.slice(-2)
+  const min = date.getMinutes()
+  let minStr = '0' + min
+  minStr = minStr.slice(-2)
+  return `${hourStr}:${minStr}`
 }
