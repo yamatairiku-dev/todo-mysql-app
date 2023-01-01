@@ -21,6 +21,7 @@ module.exports = (sequelize) => {
       categories.forEach(element => {
         categoryList.push(element.dataValues)
       })
+      console.log(categoryList)
       return categoryList
     }
 
@@ -37,9 +38,9 @@ module.exports = (sequelize) => {
     }
 
     // 登録
-    static async addCategory (value) {
+    static async addCategory (name) {
       const category = await this.create({
-        value
+        name
       })
       return category.dataValues.id
     }
