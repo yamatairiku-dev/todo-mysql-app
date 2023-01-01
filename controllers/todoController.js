@@ -132,7 +132,7 @@ module.exports = {
       next()
     }, next)
   },
-  // 将来的にはカテゴリーコントローラのメソッドで代替
+  // カテゴリーコントローラのshowメソッドと同じ
   getCategoryList: (req, res, next) => {
     models.Category.getCategoryList().then(categoryList => {
       res.locals.categoryList = categoryList

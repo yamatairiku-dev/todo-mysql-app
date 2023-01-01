@@ -51,8 +51,8 @@ app.use('/', router)
 // エラーハンドリング
 app.use((error, req, res, next) => {
   console.error(error)
-  const errCode = 500
-  const errMsg = '何らかのエラーが発生!'
+  const errCode = error.code || 500
+  const errMsg = error.name || '何らかのエラーが発生!'
   const errDescription = `${error.stack}`
   const reqUrl = req.url
   res.render('error/error', { errCode, errMsg, errDescription, reqUrl })

@@ -1,0 +1,28 @@
+<div class="text-center">
+  <h2>Userの登録</h2>
+</div>
+<form class="row g-3" action="/users/create" method="POST">
+  <div class="col-md-4">
+    <label for="validationDefault01" class="form-label">姓</label>
+    <input name="sei" type="text" class="form-control" id="validationDefault01" required>
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefault02" class="form-label">名</label>
+    <input name="mei" type="text" class="form-control" id="validationDefault02" required>
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefaultUsername" class="form-label">User ID</label>
+    <div class="input-group">
+      <span class="input-group-text" id="inputGroupPrepend2">@</span>
+      <input name="userId" type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" required>
+    </div>
+  </div>
+  <div class="form-floating md-3">
+    <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+    <label for="floatingPassword">Password</label>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">User登録</button>
+  </div>
+</form>
+

@@ -21,7 +21,6 @@ module.exports = (sequelize) => {
       categories.forEach(element => {
         categoryList.push(element.dataValues)
       })
-      console.log(categoryList)
       return categoryList
     }
 
