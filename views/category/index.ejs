@@ -1,0 +1,24 @@
+<div class="text-center">
+  <h2>Category一覧</h2>
+</div>
+<table class="table table-hover" id="todos-table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">全<%= categories.length %>件</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% categories.forEach(category => { %>
+      <tr>
+        <td> <%= category.id %> </td>
+        <td> <%= category.name %> </td>
+        <td> 
+          <button class="btn btn-outline-primary btn-sm" onclick="location.href='/categories/<%= category.id %>/show'">照会</button>
+          <button class="btn btn-outline-danger btn-sm" onclick="location.href='/categories/<%= category.id %>?_method=DELETE'">削除</button>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+  </table>

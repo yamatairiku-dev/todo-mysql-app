@@ -1,6 +1,7 @@
 'use strict'
 
 const { Model, DataTypes } = require('sequelize')
+const formatter = require('../subroutine/formatter')
 
 module.exports = (sequelize) => {
   class Todo extends Model {
@@ -39,7 +40,7 @@ module.exports = (sequelize) => {
       })
       const todo = todoData.dataValues
       todo.category = todo.Category.dataValues.name
-      todo.deadline = formatDate(todo.deadline)
+      todo.deadline = formatter.formatDate(todo.deadline)
       delete todo.Category
       return todo
     }
@@ -67,8 +68,8 @@ module.exports = (sequelize) => {
       todos.rows.forEach(element => {
         const todo = element.dataValues
         todo.category = todo.Category.dataValues.name
-        todo.deadline = formatDate(todo.deadline)
-        todo.updatedAt = formatDate(todo.updatedAt) + ' ' + formatHourMin(todo.updatedAt)
+        todo.deadline = formatter.formatDate(todo.deadline)
+        todo.updatedAt = formatter.formatDate(todo.updatedAt) + ' ' + formatter.formatHourMin(todo.updatedAt)
         delete todo.Category
         todoList.push(todo)
       })
@@ -132,26 +133,4 @@ module.exports = (sequelize) => {
     freezeTableName: true
   })
   return Todo
-}
-
-// Dateフォーマット
-function formatDate (date) {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  let monthStr = '0' + month
-  monthStr = monthStr.slice(-2)
-  const day = date.getDate()
-  let dayStr = '0' + day
-  dayStr = dayStr.slice(-2)
-  return `${year}-${monthStr}-${dayStr}`
-}
-// 時分フォーマット
-function formatHourMin (date) {
-  const hour = date.getHours()
-  let hourStr = '0' + hour
-  hourStr = hourStr.slice(-2)
-  const min = date.getMinutes()
-  let minStr = '0' + min
-  minStr = minStr.slice(-2)
-  return `${hourStr}:${minStr}`
 }

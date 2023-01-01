@@ -1,0 +1,20 @@
+<div class="text-center">
+    <h2>Categoryの登録</h2>
+</div>
+<form action="/categories/create" method="POST"></form>
+  <div class="row g-3 align-items-center">
+    <div class="col-auto">
+      <label for="inputCategory" class="col-form-label">カテゴリー</label>
+    </div>
+    <div class="col-auto">
+      <input type="text" id="inputCategory" class="form-control" aria-describedby="categooryHelpInline">
+    </div>
+    <div class="col-auto">
+      <span id="categooryHelpInline" class="form-text">
+        （入力必須）
+      </span>
+    </div>
+  </div>
+  <hr class="mb-4">
+  <button class="btn btn-primary btn-lg btn-block" type="submit">Category登録</button>
+</form>

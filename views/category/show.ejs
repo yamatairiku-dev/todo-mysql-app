@@ -1,0 +1,22 @@
+<div class="text-center">
+  <h2>Categoryの照会</h2>
+</div>
+<div class="row g-3 align-items-center">
+  <div class="col-auto">
+    <label for="inputId" class="col-form-label">ID</label>
+  </div>
+  <div class="col-auto">
+    <input value="<%= category.id %>" type="text" id="inputId" class="form-control">
+  </div>
+  <div class="col-auto">
+    <label for="inputCategory" class="col-form-label">カテゴリー</label>
+  </div>
+  <div class="col-auto">
+    <input value="<%= category.name %>" type="text" id="inputCategory" class="form-control" aria-describedby="categooryHelpInline">
+  </div>
+  <div class="col-auto">
+    <span id="categooryHelpInline" class="form-text">
+      （入力必須）
+    </span>
+  </div>
+</div>

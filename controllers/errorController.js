@@ -11,7 +11,6 @@ module.exports = {
     res.locals.reqUrl = res.locals.reqUrl || ''
     next()
   },
-
   // 経路が見つからなければ404でレスポンス
   pageNotFoundError: (req, res, next) => {
     res.locals.errCode = StatusCodes.NOT_FOUND
@@ -23,12 +22,4 @@ module.exports = {
   errorView: (req, res, next) => {
     res.render('error/error')
   }
-
-  // 全てのエラーをキャッチ
-  // internalServerError: (error, req, res, next) => {
-  //   const errorCode = StatusCodes.INTERNAL_SERVER_ERROR
-  //   console.log(`ERROR occured: ${error.stack}`)
-  //   res.status(errorCode)
-  //   res.send(`${errorCode} | Sorry, our aplication is taking a nap!`)
-  // }
 }

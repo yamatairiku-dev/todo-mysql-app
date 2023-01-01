@@ -9,20 +9,60 @@ module.exports = (sequelize) => {
       // メソッド自体は削除しない
     }
 
+    // 一覧
     static async getCategoryList () {
       const categories = await this.findAll({
         attributes: [
           'id',
-          'name',
-          'createdAt',
-          'updatedAt'
+          'name'
         ]
       })
-      const todoList = []
+      const categoryList = []
       categories.forEach(element => {
-        todoList.push(element.dataValues)
+        categoryList.push(element.dataValues)
       })
-      return todoList
+      return categoryList
+    }
+
+    // 単票
+    static async getCategory (id) {
+      const categoryData = await this.findByPk(id, {
+        attributes: [
+          'id',
+          'name'
+        ]
+      })
+      const category = categoryData.dataValues
+      return category
+    }
+
+    // 登録
+    static async addCategory (value) {
+      const category = await this.create({
+        value
+      })
+      return category.dataValues.id
+    }
+
+    // 更新
+    static async modCategory (id, value) {
+      const changes = await this.update(
+        value,
+        {
+          where: { id }
+        }
+      )
+      return changes[0] === 1 ? id : null
+    }
+
+    // 削除
+    static async delCategory (id) {
+      const changes = await this.destroy(
+        {
+          where: { id }
+        }
+      )
+      return changes === 1 ? id : null
     }
   }
 
