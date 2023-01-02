@@ -3,11 +3,15 @@
 const models = require('../models')
 
 module.exports = {
-  show: (req, res, next) => {
-
+  show: async (req, res, next) => {
+    console.log(req.session.username)
+    const id = req.params.id
+    const user = await models.User.getOne(id).catch(error => next(error))
+    res.locals.user = user
+    next()
   },
   showView: (req, res) => {
-
+    res.render('user/show')
   },
   editView: (req, res) => {
 
@@ -30,23 +34,23 @@ module.exports = {
   },
   create: async (req, res, next) => {
     const refererUrl = req.headers.referer
-    const userId = req.body.userId
+    const username = req.body.username
     const sei = req.body.sei
     const mei = req.body.mei
     const password = req.body.password
 
-    const isUnique = await models.User.isUnique(userId).catch(error => next(error))
+    const isUnique = await models.User.isUnique(username).catch(error => next(error))
     if (!isUnique) {
-      // req.flash('error', `User ID: ${userId} は既に使われています!`)
+      // req.flash('error', `User ID: ${username} は既に使われています!`)
       // res.locals.redirect = refererUrl
       const user = { sei, mei }
       res.locals.user = user
-      res.locals.flashMessages = { error: `User ID: ${userId} は既に使われています!` }
+      res.locals.flashMessages = { error: `Username: ${username} は既に使われています!` }
       next()
       return isUnique // 処理を抜ける
     }
 
-    const id = await models.User.add(userId, password, sei, mei).catch(error => next(error))
+    const id = await models.User.add(username, password, sei, mei).catch(error => next(error))
     if (!id) {
       req.flash('error', '登録失敗!')
       res.locals.redirect = refererUrl
@@ -68,8 +72,23 @@ module.exports = {
   login: (req, res) => {
     res.render('user/login')
   },
-  authenticate: (req, res, next) => {
-
+  authenticate: async (req, res, next) => {
+    const refererUrl = req.headers.referer
+    const reqUser = {
+      username: req.body.username,
+      password: req.body.password
+    }
+    const user = await models.User.getOne(reqUser.username).catch(error => next(error))
+    if (user && user.password === reqUser.password) {
+      // req.flash('success', 'ログイン成功!')
+      // res.locals.redirect = `/users/${user.id}/show`
+      res.locals.user = user
+      res.locals.flashMessages = { success: 'ログイン成功!' }
+    } else {
+      req.flash('error', 'ログイン失敗!')
+      res.locals.redirect = refererUrl
+    }
+    next()
   },
   redirectView: (req, res, next) => {
     const redirectPath = res.locals.redirect

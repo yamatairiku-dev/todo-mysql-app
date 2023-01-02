@@ -26,6 +26,7 @@
     "http-status-codes": "^2.2.0",
     "method-override": "^3.0.0",
     "mysql2": "^2.3.3",
+    "passport": "^0.6.0",
     "sequelize": "^6.26.0",
     "uuid": "^9.0.0"
   }

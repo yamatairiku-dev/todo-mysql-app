@@ -1,0 +1,25 @@
+<div class="text-center">
+  <h2>Userの照会</h2>
+</div>
+<div class="row g-3">
+  <div class="form-floating col-md-6">
+    <input value="<%= user.sei %>" name="sei" readonly type="text" class="form-control" id="validationDefault01" placeholder="姓" required>
+    <label for="validationDefault01" class="form-label">姓</label>
+  </div>
+  <div class="form-floating col-md-6">
+    <input value="<%= user.mei %>" name="mei" readonly type="text" class="form-control" id="validationDefault02" placeholder="名" required>
+    <label for="validationDefault02" class="form-label">名</label>
+  </div>
+  <div class="col-md-6">
+    <div class="input-group">
+      <span class="input-group-text" id="inputGroupPrepend2">Username</span>
+      <input value="<%= user.id %>" name="username" readonly type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" placeholder="Username" pattern="^([a-zA-Z0-9]{5,})$" title="半角英数5文字以上" required>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="input-group">
+      <span class="input-group-text" id="inputGroupPrepend2">Password</span>
+      <input value="<%= user.password %>" name="password" readonly type="text" class="form-control" id="password" placeholder="Password" pattern="^([a-zA-Z0-9]{5,})$" title="半角英数5文字以上" required>
+    </div>
+  </div>
+</div>

@@ -6,8 +6,9 @@ const expressEjsLayouts = require('express-ejs-layouts')
 const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
 const connectFlash = require('connect-flash')
+// const passport = require('passport')
+// const models = require('../models')
 const router = require('./routes/index')
-// passport = require('passport')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -22,6 +23,7 @@ app.use(methodOverride('_method', {
 }))
 app.use(cookieParser('secret_passcode'))
 app.use(expressSession({
+  name: 'MyTodoApp',
   secret: 'secret_passcode',
   cookie: {
     maxAge: 4000000
@@ -32,11 +34,13 @@ app.use(expressSession({
 app.use(connectFlash())
 
 // パスポート設定
-// passport.use(User.createStrategy())
-// passport.serializeUser(User.serializeUser())
-// passport.deserializeUser(User.deserializeUser())
+// app.use(passport.initialize())
+// app.use(passport.session())
+// passport.use(models.User.createStrategy())
+// passport.serializeUser(models.User.serializeUser())
+// passport.deserializeUser(models.User.deserializeUser())
 
-// 下記処理はシリアライズ・デシリアライズ処理の後に記述必要
+// 下記処理はシリアライズ・デシリアライズ設定の後に記述必要
 app.use((req, res, next) => {
   res.locals = {
     flashMessages: req.flash()

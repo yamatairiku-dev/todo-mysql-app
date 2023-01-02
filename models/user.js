@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
     }
 
     // 単票
-    static async get (id) {
+    static async getOne (id) {
       const userData = await this.findByPk(id, {
         attributes: [
           'id',
