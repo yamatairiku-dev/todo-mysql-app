@@ -18,6 +18,11 @@ module.exports = {
   delete: (req, res, next) => {
 
   },
+  new: (req, res, next) => {
+    res.locals.sei = ''
+    res.locals.mei = ''
+    next()
+  },
   newView: (req, res) => {
     res.render('user/new')
   },
@@ -30,8 +35,9 @@ module.exports = {
 
     const isUnique = await models.User.isUnique(userId).catch(error => next(error))
     if (!isUnique) {
-      req.flash('error', `User ID: ${userId} は既に使われています!`)
-      res.locals.redirect = refererUrl
+      res.locals.sei = sei
+      res.locals.mei = mei
+      res.locals.flashMessages = { error: `User ID: ${userId} は既に使われています!` }
       next()
       return isUnique // 処理を抜ける
     }

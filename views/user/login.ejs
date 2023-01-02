@@ -1,25 +1,19 @@
 <div class="text-center">
-  <h2>Userの登録</h2>
+  <h2>Login</h2>
 </div>
-<form class="row g-3" action="/users/create" method="POST">
-  <div class="form-floating col-md-6">
-    <input value="<%= sei %>" name="sei" type="text" class="form-control" id="validationDefault01" placeholder="姓" required>
-    <label for="validationDefault01" class="form-label">姓</label>
-  </div>
-  <div class="form-floating col-md-6">
-    <input value="<%= mei %>" name="mei" type="text" class="form-control" id="validationDefault02" placeholder="名" required>
-    <label for="validationDefault02" class="form-label">名</label>
-  </div>
+<form class="row g-3" action="/users/login" method="POST">
   <div class="col-md-6">
     <div class="input-group">
+      <label for="validationDefaultUsername" class="form-label">User ID</label>
       <span class="input-group-text" id="inputGroupPrepend2">@</span>
       <input name="userId" type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" placeholder="User ID" pattern="^([a-zA-Z0-9]{5,})$" title="半角英数5文字以上" required>
     </div>
   </div>
   <div class="col-md-6">
+    <label for="password" class="form-label">Password</label>
     <input name="password" type="password" class="form-control" id="password" placeholder="Password" pattern="^([a-zA-Z0-9]{5,})$" title="半角英数5文字以上" required>
   </div>
   <div class="col-12">
-    <button class="btn btn-primary" type="submit">User登録</button>
+    <button class="btn btn-primary" type="submit">Login</button>
   </div>
 </form>

@@ -22,6 +22,6 @@
 <script>
   $("#categories-table tbody tr").on("click",function(){
     var td_id = $(this).children().eq(0).text().trim();
-    window.location.href = `/categories/${td_id}`
+    window.location.href = `/categories/${td_id}/show`
   })
 </script>
