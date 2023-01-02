@@ -42,15 +42,18 @@ module.exports = {
       res.locals.redirect = refererUrl
     } else {
       req.flash('success', '登録成功!')
-      res.locals.redirect = refererUrl
+      res.locals.redirect = '/users'
     }
     next()
   },
   index: (req, res, next) => {
-
+    models.User.getList().then(userList => {
+      res.locals.users = userList
+      next()
+    }, next)
   },
   indexView: (req, res) => {
-
+    res.render('user/index')
   },
   redirectView: (req, res, next) => {
     const redirectPath = res.locals.redirect

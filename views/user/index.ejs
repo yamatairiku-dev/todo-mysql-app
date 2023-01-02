@@ -1,0 +1,25 @@
+<div class="text-center">
+  <h2>Category一覧</h2>
+  <h4>全<%= users.length %>件</h4>
+</div>
+<table class="table table-hover" id="categories-table">
+  <thead>
+    <tr>
+      <th scope="col">User ID</th>
+      <th scope="col">姓</th>
+      <th scope="col">名</th>
+      <th scope="col">パスワード</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user => { %>
+      <tr>
+        <td> <%= user.id %> </td>
+        <td> <%= user.sei %> </td>
+        <td> <%= user.mei %> </td>
+        <td> <%= user.password %> </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
