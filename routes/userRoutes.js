@@ -17,5 +17,9 @@ router.put('/:id', userController.update, userController.redirectView)
 router.delete('/:id', userController.delete, userController.redirectView)
 // 一覧画面表示
 router.get('/', userController.index, userController.indexView)
+// Login画面表示
+router.get('/login', userController.login)
+// 一覧画面表示
+router.post('/login', userController.authenticate, userController.redirectView)
 
 module.exports = router

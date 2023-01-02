@@ -19,8 +19,10 @@ module.exports = {
 
   },
   new: (req, res, next) => {
-    res.locals.sei = ''
-    res.locals.mei = ''
+    if (!res.locals.user) {
+      const user = { sei: '', mei: '' }
+      res.locals.user = user
+    }
     next()
   },
   newView: (req, res) => {
@@ -35,8 +37,10 @@ module.exports = {
 
     const isUnique = await models.User.isUnique(userId).catch(error => next(error))
     if (!isUnique) {
-      res.locals.sei = sei
-      res.locals.mei = mei
+      // req.flash('error', `User ID: ${userId} は既に使われています!`)
+      // res.locals.redirect = refererUrl
+      const user = { sei, mei }
+      res.locals.user = user
       res.locals.flashMessages = { error: `User ID: ${userId} は既に使われています!` }
       next()
       return isUnique // 処理を抜ける
@@ -60,6 +64,12 @@ module.exports = {
   },
   indexView: (req, res) => {
     res.render('user/index')
+  },
+  login: (req, res) => {
+    res.render('user/login')
+  },
+  authenticate: (req, res, next) => {
+
   },
   redirectView: (req, res, next) => {
     const redirectPath = res.locals.redirect

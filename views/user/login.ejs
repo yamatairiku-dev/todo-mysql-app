@@ -3,8 +3,8 @@
 </div>
 <form class="row g-3" action="/users/login" method="POST">
   <div class="col-md-6">
+    <label for="validationDefaultUsername" class="form-label">User ID</label>
     <div class="input-group">
-      <label for="validationDefaultUsername" class="form-label">User ID</label>
       <span class="input-group-text" id="inputGroupPrepend2">@</span>
       <input name="userId" type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" placeholder="User ID" pattern="^([a-zA-Z0-9]{5,})$" title="半角英数5文字以上" required>
     </div>

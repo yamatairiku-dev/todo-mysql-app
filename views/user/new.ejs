@@ -3,11 +3,11 @@
 </div>
 <form class="row g-3" action="/users/create" method="POST">
   <div class="form-floating col-md-6">
-    <input value="<%= sei %>" name="sei" type="text" class="form-control" id="validationDefault01" placeholder="姓" required>
+    <input value="<%= user.sei %>" name="sei" type="text" class="form-control" id="validationDefault01" placeholder="姓" required>
     <label for="validationDefault01" class="form-label">姓</label>
   </div>
   <div class="form-floating col-md-6">
-    <input value="<%= mei %>" name="mei" type="text" class="form-control" id="validationDefault02" placeholder="名" required>
+    <input value="<%= user.mei %>" name="mei" type="text" class="form-control" id="validationDefault02" placeholder="名" required>
     <label for="validationDefault02" class="form-label">名</label>
   </div>
   <div class="col-md-6">
