@@ -6,8 +6,9 @@ const expressEjsLayouts = require('express-ejs-layouts')
 const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
 const connectFlash = require('connect-flash')
-// const passport = require('passport')
-// const models = require('../models')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+const models = require('./models')
 const router = require('./routes/index')
 
 const app = express()
@@ -34,18 +35,42 @@ app.use(expressSession({
 app.use(connectFlash())
 
 // パスポート設定
-// app.use(passport.initialize())
-// app.use(passport.session())
-// passport.use(models.User.createStrategy())
-// passport.serializeUser(models.User.serializeUser())
-// passport.deserializeUser(models.User.deserializeUser())
+passport.use(new LocalStrategy(
+  async (username, password, done) => {
+    const user = await models.User.getOne(username)
+    if (user && user.password === password) {
+      // login成功
+      return done(null, user)
+    } else {
+      // login失敗
+      return done(null, false)
+    }
+  }
+))
+app.use(passport.initialize())
+app.use(passport.session())
+passport.serializeUser(
+  (user, done) => {
+    done(null, user.id)
+  }
+)
+passport.deserializeUser(
+  async (id, done) => {
+    const user = await models.User.getOne(id)
+    if (user) {
+      return done(null, user)
+    } else {
+      throw new Error('User not found')
+    }
+  }
+)
 
 // 下記処理はシリアライズ・デシリアライズ設定の後に記述必要
 app.use((req, res, next) => {
   res.locals = {
-    flashMessages: req.flash()
-    // loggedIn: req.isAuthenticated(),
-    // currentUser: req.user
+    flashMessages: req.flash(),
+    loggedIn: req.isAuthenticated(),
+    currentUser: req.user
   }
   next()
 })
