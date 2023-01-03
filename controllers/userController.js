@@ -72,24 +72,7 @@ module.exports = {
   login: (req, res) => {
     res.render('user/login')
   },
-  // authenticate: async (req, res, next) => {
-  //   const refererUrl = req.headers.referer
-  //   const reqUser = {
-  //     username: req.body.username,
-  //     password: req.body.password
-  //   }
-  //   const user = await models.User.getOne(reqUser.username).catch(error => next(error))
-  //   if (user && user.password === reqUser.password) {
-  //     // req.flash('success', 'ログイン成功!')
-  //     // res.locals.redirect = `/users/${user.id}/show`
-  //     res.locals.user = user
-  //     res.locals.flashMessages = { success: 'ログイン成功!' }
-  //   } else {
-  //     req.flash('error', 'ログイン失敗!')
-  //     res.locals.redirect = refererUrl
-  //   }
-  //   next()
-  // },
+  // passport.js ビルトインオプション
   // authenticate: passport.authenticate('local', {
   //   failureRedirect: '/users/login',
   //   failureFlash: 'ログイン失敗!',
