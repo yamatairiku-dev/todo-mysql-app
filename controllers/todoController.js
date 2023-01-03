@@ -182,6 +182,13 @@ module.exports = {
       next()
     }, next)
   },
+  isAuth: (req, res, next) => {
+    if (!res.locals.loggedIn) {
+      req.flash('error', `"${req.url}" へアクセスするためにはログインしてください`)
+      res.locals.redirect = '/users/login'
+    }
+    next()
+  },
   redirectView: (req, res, next) => {
     const redirectPath = res.locals.redirect
     redirectPath ? res.redirect(redirectPath) : next()

@@ -3,6 +3,8 @@
 const router = require('express').Router()
 const todoController = require('../controllers/todoController')
 
+// ログイン判定
+router.use(todoController.isAuth, todoController.redirectView)
 // ToDoを完了
 router.put('/:id/completed', todoController.doCompleted, todoController.redirectView)
 // ToDoを未完了
