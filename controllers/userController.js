@@ -5,7 +5,6 @@ const models = require('../models')
 
 module.exports = {
   show: async (req, res, next) => {
-    console.log(req.session.username)
     const id = req.params.id
     const user = await models.User.getOne(id).catch(error => next(error))
     res.locals.user = user
@@ -91,12 +90,30 @@ module.exports = {
   //   }
   //   next()
   // },
-  authenticate: passport.authenticate('local', {
-    failureRedirect: '/users/login',
-    failureFlash: 'ログイン失敗!',
-    successRedirect: '/users',
-    successFlash: 'ログイン成功!'
-  }),
+  // authenticate: passport.authenticate('local', {
+  //   failureRedirect: '/users/login',
+  //   failureFlash: 'ログイン失敗!',
+  //   successRedirect: '/users',
+  //   successFlash: 'ログイン成功!'
+  // }),
+  authenticate: (req, res, next) => {
+    const refererUrl = req.headers.referer
+    passport.authenticate('local', (err, user, info) => {
+      if (err) { return next(err) }
+      if (!user) {
+        req.flash('error', 'ログイン失敗!')
+        return res.redirect(refererUrl)
+      }
+      req.login(user, (err) => {
+        if (err) { return next(err) }
+        // req.flash('success', 'ログイン成功!')
+        // return res.redirect(`/users/${user.id}/show`)
+        res.locals.user = user
+        res.locals.flashMessages = { success: 'ログイン成功!' }
+        return next()
+      })
+    })(req, res, next)
+  },
   redirectView: (req, res, next) => {
     const redirectPath = res.locals.redirect
     redirectPath ? res.redirect(redirectPath) : next()

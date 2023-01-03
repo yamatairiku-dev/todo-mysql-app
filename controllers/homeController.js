@@ -7,6 +7,7 @@ module.exports = {
     }
     const viewCount = req.session.views++
     console.log(`View Count: ${viewCount}`)
+    console.log(`Login User: ${JSON.stringify(res.locals.currentUser)}`)
     res.render('index')
   }
 }

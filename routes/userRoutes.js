@@ -19,7 +19,7 @@ router.delete('/:id', userController.delete, userController.redirectView)
 router.get('/', userController.index, userController.indexView)
 // Login画面表示
 router.get('/login', userController.login)
-// 一覧画面表示
+// Login処理
 router.post('/login', userController.authenticate, userController.redirectView, userController.showView)
 
 module.exports = router
