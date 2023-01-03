@@ -89,13 +89,20 @@ module.exports = {
       }
       req.login(user, (err) => {
         if (err) { return next(err) }
-        // req.flash('success', 'ログイン成功!')
-        // return res.redirect(`/users/${user.id}/show`)
-        res.locals.user = user
-        res.locals.flashMessages = { success: 'ログイン成功!' }
-        return next()
+        req.flash('success', 'ログイン成功!')
+        return res.redirect(`/users/${user.id}/show`)
+        // res.locals.user = user
+        // res.locals.flashMessages = { success: 'ログイン成功!' }
+        // return next()
       })
     })(req, res, next)
+  },
+  logout: (req, res, next) => {
+    req.logout(err => {
+      if (err) { return next(err) }
+      req.flash('success', 'You have been logged out!')
+      return res.redirect('/')
+    })
   },
   redirectView: (req, res, next) => {
     const redirectPath = res.locals.redirect

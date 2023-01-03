@@ -21,5 +21,7 @@ router.get('/', userController.index, userController.indexView)
 router.get('/login', userController.login)
 // Login処理
 router.post('/login', userController.authenticate, userController.redirectView, userController.showView)
+// Loout処理
+router.get('/logout', userController.logout, userController.redirectView)
 
 module.exports = router
