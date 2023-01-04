@@ -1,20 +1,13 @@
 'use strict'
 
 const { Model, DataTypes } = require('sequelize')
-// const bcrypt = require('bcrypt')
-// const saltRounds = 10
-// async function hashPassword (password) {
-//   const salt = await bcrypt.genSalt(saltRounds)
-//   const hashed = await bcrypt.hash(password, salt)
-//   return hashed
-// }
-
-// const hashedPass = await hashPassword(password)
-// const id = await models.User.add(username, hashedPass, sei, mei).catch(error => next(error))
-// verifyPassword: async (passA, passB) => {
-//   const isMatch = await bcrypt.compare(passA, passB)
-//   return isMatch
-// }
+const bcrypt = require('bcrypt')
+const saltRounds = 10
+async function hashPassword (password) {
+  const salt = await bcrypt.genSalt(saltRounds)
+  const hashed = await bcrypt.hash(password, salt)
+  return hashed
+}
 
 module.exports = (sequelize) => {
   class User extends Model {
@@ -33,18 +26,18 @@ module.exports = (sequelize) => {
           'mei'
         ]
       })
-      const user = userData.dataValues
-      const result = { isMatch: null, user: null }
-      if (user && user.password === password) {
+      let user = userData.dataValues
+      let isMatch = await bcrypt.compare(password, user.password) // hash値比較
+      // if (user && user.password === password) { // プレーンパスワード比較
+      if (user && isMatch) {
         // login成功
-        result.isMatch = true
         delete user.password
-        result.user = user
       } else {
         // login失敗
-        result.isMatch = false
-        result.user = null
+        isMatch = false
+        user = null
       }
+      const result = { isMatch, user }
       return result
     }
 
@@ -96,9 +89,10 @@ module.exports = (sequelize) => {
 
     // 登録
     static async add (id, password, sei, mei) {
+      const hashedPass = await hashPassword(password)
       const user = await this.create({
         id,
-        password,
+        password: hashedPass,
         sei,
         mei
       })
