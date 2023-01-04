@@ -1,12 +1,51 @@
 'use strict'
 
 const { Model, DataTypes } = require('sequelize')
+// const bcrypt = require('bcrypt')
+// const saltRounds = 10
+// async function hashPassword (password) {
+//   const salt = await bcrypt.genSalt(saltRounds)
+//   const hashed = await bcrypt.hash(password, salt)
+//   return hashed
+// }
+
+// const hashedPass = await hashPassword(password)
+// const id = await models.User.add(username, hashedPass, sei, mei).catch(error => next(error))
+// verifyPassword: async (passA, passB) => {
+//   const isMatch = await bcrypt.compare(passA, passB)
+//   return isMatch
+// }
 
 module.exports = (sequelize) => {
   class User extends Model {
     static associate (models) {
       // 必要があればここにテーブルの関連付けを書く
       // メソッド自体は削除しない
+    }
+
+    // パスワードチェック
+    static async varifyPassword (username, password) {
+      const userData = await this.findByPk(username, {
+        attributes: [
+          'id',
+          'password',
+          'sei',
+          'mei'
+        ]
+      })
+      const user = userData.dataValues
+      const result = { isMatch: null, user: null }
+      if (user && user.password === password) {
+        // login成功
+        result.isMatch = true
+        delete user.password
+        result.user = user
+      } else {
+        // login失敗
+        result.isMatch = false
+        result.user = null
+      }
+      return result
     }
 
     // 一覧

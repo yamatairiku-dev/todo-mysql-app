@@ -25,7 +25,11 @@
             <li><a class="dropdown-item" href="/users">一覧</a></li>
             <li><a class="dropdown-item" href="/users/new">新規登録</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/users/login">ログイン</a></li>
+            <% if (loggedIn) { %>
+              <li><a class="dropdown-item" href="/users/logout">ログアウト</a></li>
+            <% } else { %>
+              <li><a class="dropdown-item" href="/users/login">ログイン</a></li>
+            <% } %>
           </ul>
         </li>
         <li class="nav-item dropdown">

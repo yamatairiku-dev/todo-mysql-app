@@ -37,10 +37,10 @@ app.use(connectFlash())
 // パスポート設定
 passport.use(new LocalStrategy(
   async (username, password, done) => {
-    const user = await models.User.getOne(username)
-    if (user && user.password === password) {
+    const result = await models.User.varifyPassword(username, password)
+    if (result.isMatch) {
       // login成功
-      return done(null, user)
+      return done(null, result.user)
     } else {
       // login失敗
       return done(null, false)

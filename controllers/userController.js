@@ -1,14 +1,7 @@
 'use strict'
 
 const passport = require('passport')
-const bcrypt = require('bcrypt')
 const models = require('../models')
-const saltRounds = 10
-async function hashPassword (password) {
-  const salt = await bcrypt.genSalt(saltRounds)
-  const hashed = await bcrypt.hash(password, salt)
-  return hashed
-}
 
 module.exports = {
   show: async (req, res, next) => {
@@ -56,9 +49,7 @@ module.exports = {
       next()
       return isUnique // 処理を抜ける
     }
-    const hashedPass = await hashPassword(password)
-    const id = await models.User.add(username, hashedPass, sei, mei).catch(error => next(error))
-    // const id = await models.User.add(username, password, sei, mei).catch(error => next(error))
+    const id = await models.User.add(username, password, sei, mei).catch(error => next(error))
     if (!id) {
       req.flash('error', '登録失敗!')
       res.locals.redirect = refererUrl
@@ -104,10 +95,6 @@ module.exports = {
         // return next()
       })
     })(req, res, next)
-  },
-  verifyPassword: async (passA, passB) => {
-    const isMatch = await bcrypt.compare(passA, passB)
-    return isMatch
   },
   logout: (req, res, next) => {
     req.logout(err => {
