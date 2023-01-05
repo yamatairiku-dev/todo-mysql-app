@@ -6,7 +6,7 @@ const userController = require('../controllers/userController')
 // 登録画面表示
 router.get('/new', userController.new, userController.newView)
 // 登録処理
-router.post('/create', userController.create, userController.redirectView, userController.newView)
+router.post('/create', userController.create, userController.redirectView)
 // 照会画面表示
 router.get('/:id/show', userController.show, userController.showView)
 // 更新画面表示
