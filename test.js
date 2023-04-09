@@ -12,3 +12,14 @@ const myapp = {
 myapp.myfunc()()
 
 console.log(a) // global
+
+const sampleFunc = {
+  data: function data () {
+    return 'data'
+  },
+  mounted () {
+    return 'mounted'
+  }
+}
+
+console.log(sampleFunc.data())
