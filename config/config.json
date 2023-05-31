@@ -15,7 +15,7 @@
   },
   "production": {
     "use_env_variable": "DB_CONNECTION_URI",
-    "dialecttOptions": {
+    "dialectOptions": {
       "ssl": true,
       "ca": "serverCa"
     }
