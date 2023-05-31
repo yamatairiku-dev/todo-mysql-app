@@ -15,8 +15,8 @@
   },
   "production": {
     "use_env_variable": "DB_CONNECTION_URI",
-    "dialectOptions": {
-      "ssl": true,
+    "ssl": {
+      "rejectUnauthorized": true,
       "ca": "serverCa"
     }
   }
