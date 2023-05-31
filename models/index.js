@@ -7,7 +7,7 @@ const basename = path.basename(__filename) // パスを含まないこのファ�
 const env = process.env.NODE_ENV || 'development'
 const config = require(path.join(__dirname, '/../config/config.json'))[env]
 const db = {}
-const serverCa = [fs.readFileSync('DigiCertGlobalRootCA.crt.pem', 'utf8')]
+const serverCa = [fs.readFileSync('/home/site/wwwroot/public/DigiCertGlobalRootCA.crt.pem', 'utf8')]
 
 let sequelize
 if (config.use_env_variable) {
